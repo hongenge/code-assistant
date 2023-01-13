@@ -14,12 +14,9 @@
 
 
 #### 运行：
+下载发行版，解压后运行`kk.exe`
 
-```
-pythonw kk.py
-```
-
-备注：如果用`python kk.py`会弹出`cmd`窗口。建议用`pythonw kk.py`运行
+![image-20230113094605172](image-20230113094605172.png)
 
 
 
@@ -29,7 +26,7 @@ pythonw kk.py
 
 **使用前别忘记先添加命令**
 
-![image-20230113094605172](image-20230113094605172.png)
+
 
 
 ![image-20230113100333302](image-20230113100333302.png)
@@ -53,15 +50,4 @@ pythonw kk.py
 
 #### 创建新的空数据库：
 
-`data.db`为数据库文件。如果需要重新生成数据库文件可以用`python kk.py --create_ok`命令创建新的空数据库`data_new.db`然后重命名为`data.db`就可以用了。
-
-
-
-#### 用到的`python`库，用`pip`或者`pip3`命令安装
-
-```
-pip install pypiwin32
-pip install argparse
-pip install PyQt5
-pip install keyboard
-```
+`data.db`为数据库文件。如果需要重新生成数据库文件可以用`kk.exe --create_ok`命令创建新的空数据库`data_new.db`然后重命名为`data.db`就可以用了。
