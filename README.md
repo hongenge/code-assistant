@@ -1,7 +1,7 @@
 # KK-CODE
 ---
 [![python版本](https://img.shields.io/badge/python-3.7-brightgreen.svg?style=flat)]()
-[![license](https://img.shields.io/badge/license-MulanPSL 2.0-brightgreen.svg?style=flat)]()
+[![license](https://img.shields.io/badge/license-MulanPSL2.0-brightgreen.svg?style=flat)]()
 [![作者](https://img.shields.io/badge/Author-陌北v1-orange.svg?style=flat)]()
 [![版本号](https://img.shields.io/badge/version-v1.0-brightgreen.svg?style=flat)]()
 [![star](https://gitee.com/zzwhe/kk_code/badge/star.svg?theme=dark)]()
