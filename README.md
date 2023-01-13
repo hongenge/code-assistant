@@ -6,7 +6,6 @@
 	<img src="https://img.shields.io/badge/Author-陌北v1-orange.svg?style=flat" />
 	<img src="https://img.shields.io/badge/version-v1.0-brightgreen.svg?style=flat" />
 	<img src="https://gitee.com/zzwhe/kk_code/badge/star.svg?theme=gray" />
-    <img src="https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=gray" />
 </p>
 [![fork](https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=dark)](https://gitee.com/mirrors/srsLTE/members)
 [![fork](https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=dark)](https://gitee.com/mirrors/srsLTE/members)
