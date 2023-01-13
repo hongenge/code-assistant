@@ -1,9 +1,12 @@
 # KK-CODE
-
+---
 <p align="left">
-    <img src="https://gitee.com/zzwhe/kk_code/badge/star.svg?theme=gray" />
-    <img src="https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=gray" />
     <img src="https://img.shields.io/badge/python-3.7-brightgreen.svg?style=flat" />
+    <img src="https://img.shields.io/badge/license-MulanPSL 2.0-brightgreen.svg?style=flat" />
+	<img src="https://img.shields.io/badge/Author-陌北v1-orange.svg?style=flat" />
+	<img src="https://img.shields.io/badge/version-v1.0-brightgreen.svg?style=flat" />
+	<img src="https://gitee.com/zzwhe/kk_code/badge/star.svg?theme=gray" />
+    <img src="https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=gray" />
 </p>
 
 
