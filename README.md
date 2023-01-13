@@ -1,6 +1,5 @@
 # KK-CODE
 ---
-
 [![python版本](https://img.shields.io/badge/python-3.7-brightgreen.svg?style=flat)]()
 [![license](https://img.shields.io/badge/license-MulanPSL 2.0-brightgreen.svg?style=flat)]()
 [![作者](https://img.shields.io/badge/Author-陌北v1-orange.svg?style=flat)]()
