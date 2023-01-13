@@ -1,4 +1,4 @@
-## KK
+## KK_CODE
 
 用python开发的代码片段快捷输入工具。
 开发环境:python3.7
