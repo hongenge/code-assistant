@@ -8,9 +8,13 @@
 [![star](https://gitee.com/zzwhe/kk_code/badge/star.svg?theme=dark)]()
 [![fork](https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=dark)]()
 
-程序员命令太多记不住怎么办，快来试试`code-assistant`代码输入助手桌面小程序吧。命令、代码片段都能帮你轻松输入。
 
-用python写的代码输入助手桌面小程序。
+
+用python写的代码输入助手小程序。
+
+命令太多，很容易忘记，还有很多代码片段想保存下来用到的时候能够快速输入，提高开发效率。在网上找了很多，发现都不是自己想要的。于是就用python开发了一个自己用的代码输入助手小程序，我自己已经用了很长时间了，感觉慢好用的，可以很方便的帮你输入一些复杂且经常忘记的命令和你经常用到的代码片段。
+
+
 
 开发环境:python3.7
 
