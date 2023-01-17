@@ -1,4 +1,4 @@
-# Code Assistant(代码输入辅助)
+# Code Assistant(代码输入助手)
 
 [![python版本](https://img.shields.io/badge/python-3.7+-brightgreen.svg?style=flat)]()
 [![版本号](https://img.shields.io/badge/release-v1.0.0-brightgreen.svg?style=flat)]()
@@ -8,9 +8,10 @@
 [![star](https://gitee.com/zzwhe/kk_code/badge/star.svg?theme=dark)]()
 [![fork](https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=dark)]()
 
-程序员命令太多记不住怎么办，快来试试`code-assistant`代码输入辅助桌面小程序吧。命令、代码片段都能帮你轻松输入。
+程序员命令太多记不住怎么办，快来试试`code-assistant`代码输入助手桌面小程序吧。命令、代码片段都能帮你轻松输入。
 
-用python开发的代码片段快捷输入工具。
+用python写的代码输入助手桌面小程序。
+
 开发环境:python3.7
 
 
