@@ -42,7 +42,7 @@
 #### 添加：
 输入` :add`会弹出添加窗口：
 
-![add](D:\py\pytools\code-assistant\add.png)
+![add](add.png)
 
 添加窗口：
 
@@ -52,7 +52,7 @@
 
 右键点击列表选项会弹出菜单可以进行编辑和删除操作
 
-![edit](D:\py\pytools\code-assistant\edit.png)
+![edit](edit.png)
 
 #### 创建新的空数据库：
 
