@@ -1,16 +1,8 @@
-#    Copyright (c) [2023] [陌北v1]
-#    [KK-CODE] is licensed under Mulan PSL v2.
-#    You can use this software according to the terms and conditions of the Mulan PSL v2. 
-#    You may obtain a copy of Mulan PSL v2 at:
-#                http://license.coscl.org.cn/MulanPSL2 
-#    THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.  
-#    See the Mulan PSL v2 for more details.  
-
-
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 # from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtGui import QCursor
 from ui import Ui_Form
 import sqlite3
 import win32con
@@ -19,7 +11,6 @@ import keyboard
 import time
 import argparse
 from add_ui import Ui_AddForm
-from list_ui import Ui_ListForm
 
 class MainWindow(QtWidgets.QMainWindow,Ui_Form):
     conn = sqlite3.connect("data.db")
@@ -49,30 +40,40 @@ class MainWindow(QtWidgets.QMainWindow,Ui_Form):
         self.lineEdit.textChanged.connect(self.on_edit_textChanged)#文本框输入事件
         self.lineEdit.returnPressed.connect(self.lineEdit_function)#文本框回车事件
         self.listWidget.itemActivated.connect(self.itemok)
-        self.list_win = ListWindow()
-    #item点击事件
-    def itemok(self):
+
+        self.add_win = AddWindow()
+        self.edit_win = EditWindow()
+        self.edit_win._signal.connect(self.receivedmsg)
+
+        self.listWidget.setContextMenuPolicy(Qt.CustomContextMenu)
+        # 创建QMenu信号事件
+        self.listWidget.customContextMenuRequested.connect(self.showMenu)
+        self.contextMenu = QtWidgets.QMenu(self)
+        self.medit = self.contextMenu.addAction('编辑')
+        self.mdel = self.contextMenu.addAction('删除')
+        #事件绑定
+        self.medit.triggered.connect(self.EditEvent)
+        self.mdel.triggered.connect(self.DelEvent)
+    def showMenu(self):
+        # 菜单显示前,将它移动到鼠标点击的位置
+        self.contextMenu.exec_(QCursor.pos())  # 在鼠标位置显示
+    def EditEvent(self):
         index = self.listWidget.currentIndex().row()
-        self.inputtxt(self.tmp_list[index][4])
-        self.hide_ok()     
+        id = self.tmp_list[index][0]
+        self.edit_win.setID(id)
+        self.edit_win.show()
+    def DelEvent(self):
+        index = self.listWidget.currentIndex().row()
+        id = self.tmp_list[index][0]
+        delete(id)
+        self.mylistLoad()
 
+    def receivedmsg(self,msg):
+        print("收到消息内容：",msg)
+        self.mylistLoad()
 
-    #回车默认选择第一个
-    def lineEdit_function(self):
-        if self.tmp_list:
-            self.inputtxt(self.tmp_list[0][4])
-            self.hide_ok()
-        else:
-            tmp_str = self.lineEdit.text()
-            if tmp_str==":edit":
-                self.list_win.show()
-                self.lineEdit.setText("")
-            else:
-                self.hide_ok()
-
-
-    #文件框输入事件
-    def on_edit_textChanged(self):
+    #输入内容后渲染列表
+    def mylistLoad(self):
         self.tmp_list = []
         self.listWidget.clear()
         str1 = self.lineEdit.text()
@@ -97,6 +98,34 @@ class MainWindow(QtWidgets.QMainWindow,Ui_Form):
         else:
             self.listWidget.setGeometry(QtCore.QRect(8, 8+51, 734, 272))
             self.resize(750, 16+51)
+
+
+
+    #item点击事件
+    def itemok(self):
+        index = self.listWidget.currentIndex().row()
+        self.inputtxt(self.tmp_list[index][4])
+        self.hide_ok()     
+
+
+    #回车默认选择第一个
+    def lineEdit_function(self):
+        if self.tmp_list:
+            self.inputtxt(self.tmp_list[0][4])
+            self.hide_ok()
+        else:
+            tmp_str = self.lineEdit.text()
+            if tmp_str==":add":
+                # self.list_win.show()
+                self.add_win.show()
+                self.lineEdit.setText("")
+            else:
+                self.hide_ok()
+
+
+    #文件框输入事件
+    def on_edit_textChanged(self):
+        self.mylistLoad()
 
     #写入剪贴板
     def inputtxt(self,string):
@@ -171,7 +200,6 @@ class MainWindow(QtWidgets.QMainWindow,Ui_Form):
         return mlist
 
 
-
 #创建数据库
 def create_ok():
     conn = sqlite3.connect("data_new.db")
@@ -200,9 +228,8 @@ def select_all():
     li = []
     for row in cursor:
         li.append([row[0],row[1],row[2]])
-        # print(row[0],row[1],row[2])
+        print(row[0],row[1],row[2])
     conn.close()
-    return li
 
 #查找
 def select(str1):
@@ -217,11 +244,11 @@ def select(str1):
 
 #添加界面
 class AddWindow(QtWidgets.QMainWindow,Ui_AddForm):
-    _signal = QtCore.pyqtSignal(str)
     def __init__(self,parent=None):
         super(AddWindow, self).__init__(parent)
         self.setupUi(self)
         self.pushButton.clicked.connect(self.ok_btn)
+        QtWidgets.QShortcut(QtGui.QKeySequence('Esc', ), self, self.close)
 
     #添加数据按钮
     def ok_btn(self):
@@ -235,7 +262,6 @@ class AddWindow(QtWidgets.QMainWindow,Ui_AddForm):
         self.lineEdit_title.setText("")
         self.lineEdit_example.setText("")
         self.textEdit_Note.setText("")
-        self._signal.emit("发送指令让主窗口tableView重新初始化")
     
 
     #添加数据方法
@@ -260,6 +286,7 @@ class EditWindow(QtWidgets.QMainWindow,Ui_AddForm):
         self.setWindowTitle(_translate("AddForm", "修改"))
         self.pushButton.setText(_translate("AddForm", "修改"))
         self.pushButton.clicked.connect(self.ok_btn)
+        QtWidgets.QShortcut(QtGui.QKeySequence('Esc', ), self, self.close)
         
     def setID(self,id):
         self.id = id
@@ -276,7 +303,7 @@ class EditWindow(QtWidgets.QMainWindow,Ui_AddForm):
         self.lineEdit_title.setText("")
         self.lineEdit_example.setText("")
         self.textEdit_Note.setText("")
-        self._signal.emit("发送指令让主窗口tableView重新初始化")
+        self._signal.emit("向主窗口发送消息")
         self.close()
         
 
@@ -310,78 +337,8 @@ class EditWindow(QtWidgets.QMainWindow,Ui_AddForm):
         conn.close()
 
 
-#列表界面
-class ListWindow(QtWidgets.QMainWindow,Ui_ListForm):
-
-    def __init__(self,parent=None):
-        super(ListWindow, self).__init__(parent)
-        self.setupUi(self)
-        _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("ListForm", "列表"))
-        self.initData()
-        self.pushButton_add.clicked.connect(self.add_btn)
-        self.pushButton_edit.clicked.connect(self.edit_btn)
-        self.pushButton_del.clicked.connect(self.del_btn)
-        self.add_win = AddWindow()
-        self.edit_win = EditWindow()
-        self.edit_win._signal.connect(self.initdataok)
-        self.add_win._signal.connect(self.initdataok)
-        self.tableView.doubleClicked.connect(self.edit_btn) #双击编辑
-    
-
-    def resizeEvent(self,event):
-        height = event.size().height()
-        width = event.size().width()
-        self.tableView.setGeometry(QtCore.QRect(0, 0, width-100, height))
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(width-95, 10, 91, 101))
-    
-    #添加
-    def add_btn(self):
-        self.add_win.show()
-
-    #编辑
-    def edit_btn(self):
-        index = self.tableView.currentIndex()
-        id = self.model.index(index.row(),0).data()
-        self.edit_win.setID(id)
-        self.edit_win.show()
-
-    #删除
-    def del_btn(self):
-        index = self.tableView.currentIndex()
-        id = self.model.index(index.row(),0).data()
-        delete(id)
-        self.model.removeRow(index.row())
-
-    #重新初始化
-    def initdataok(self,parameter):
-        print(parameter)
-        self.model.clear()
-        self.initData()
-
-    #初始化
-    def initData(self):
-        self.model = QtGui.QStandardItemModel(0,3)
-        self.model.setHorizontalHeaderLabels(['ID', '快捷短语',"标题"])
-        self.tableView.setModel(self.model)
-        self.tableView.horizontalHeader().setSectionResizeMode(QtWidgets.QHeaderView.Stretch)
-        self.tableView.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
-        self.tableView.setEditTriggers(QtWidgets.QTableView.NoEditTriggers) #不可编辑
-        self.tableView.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows) #设置只有行选中
-        self.tableView.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.ResizeToContents)
-
-
-        li = select_all()
-        for a in li:
-            self.model.appendRow([
-                QtGui.QStandardItem("%s" % a[0]),
-                QtGui.QStandardItem(a[1]),
-                QtGui.QStandardItem(a[2]),
-            ])
-        # self.model.clear()
-
 parser = argparse.ArgumentParser(description='参数说明')
-parser.add_argument('--search', type=str,required=False,help='搜索要查找的内容')
+parser.add_argument('--list',help='获取全部记录',action="store_true")
 parser.add_argument('--create_ok', help="创建数据库",action="store_true")
 args = parser.parse_args()
 # print(args)
@@ -391,8 +348,8 @@ if __name__ == '__main__':
     if args.create_ok:
         create_ok()
     #查找
-    elif args.search:
-        select(args.search)
+    elif args.list:
+        select_all()
     else:
         app = QtWidgets.QApplication(sys.argv)
         main = MainWindow()
