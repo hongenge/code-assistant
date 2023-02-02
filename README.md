@@ -5,8 +5,6 @@
 [![license](https://img.shields.io/badge/license-MulanPSL2.0-brightgreen.svg?style=flat)]()
 [![license](https://img.shields.io/badge/os-win-brightgreen.svg?style=flat)]()
 [![作者](https://img.shields.io/badge/Author-陌北v1-orange.svg?style=flat)]()
-[![star](https://gitee.com/zzwhe/kk_code/badge/star.svg?theme=dark)]()
-[![fork](https://gitee.com/zzwhe/kk_code/badge/fork.svg?theme=dark)]()
 
 
 
