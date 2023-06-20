@@ -146,10 +146,10 @@ class MainWindow(QtWidgets.QMainWindow,Ui_Form):
     #开始监听键盘
     def abc(self):
         if keyboard.wait(hotkey='ctrl+alt') == None:
-            a = int(time.time())
+            a = time.time()
             if keyboard.wait(hotkey='ctrl+alt') == None:
-                b = int(time.time())
-                if b-a <= 1:
+                b = time.time()
+                if b-a < 0.5:
                     print("显示窗口")
                     self.show()
                     self.lineEdit.setFocus()#获取焦点
