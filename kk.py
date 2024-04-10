@@ -25,6 +25,7 @@ class MainWindow(QtWidgets.QMainWindow,Ui_Form):
         
         self.setStyleSheet('#Form{background-color:#3c3c3c;}')
         self.lineEdit.setStyleSheet("border:0px;background-color:#666;color:#e0e0e0;font-size:22px;font-family:'Microsoft YaHei UI';")
+        self.lineEdit.setFocus()
         self.listWidget.setStyleSheet('#listWidget{border:0px;background-color:#3c3c3c;}')
         self.listWidget.setGeometry(QtCore.QRect(8, 8+51, 734, 272))
         self.resize(750, 16+51)
