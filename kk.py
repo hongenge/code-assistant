@@ -239,6 +239,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_Form):
 
 
     def lineEdit_function(self):
+        tmp_str = self.lineEdit.text()
+        if tmp_str == ":add":
+            self.add_win.show()
+            self.lineEdit.setText("")
+            return
         modifiers = QtWidgets.QApplication.keyboardModifiers()
         print(f"检测到回车! 当前修饰键代码: {int(modifiers)}")
         if self.tmp_list:
@@ -249,12 +254,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_Form):
                 print(">>> 判定成功：你按下了 Ctrl + Enter")
                 QtCore.QTimer.singleShot(150, lambda: self.simulate_paste())
         else:
-            tmp_str = self.lineEdit.text()
-            if tmp_str == ":add":
-                self.add_win.show()
-                self.lineEdit.setText("")
-            else:
-                self.hide_ok()
+            self.hide_ok()
 
 
     def simulate_paste(self):
