@@ -10,7 +10,6 @@ import win32con
 import win32clipboard as w
 from pynput import keyboard as pynput_keyboard
 from pynput.keyboard import Controller, Key
-import argparse
 from add_ui import Ui_AddForm
 import html
 from PyQt5.QtNetwork import QLocalServer, QLocalSocket
@@ -356,7 +355,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_Form):
 # =========================
 def create_ok():
     if os.path.exists(DB_NAME):
-        print("数据库文件已存在，无需重复创建。")
         return
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
@@ -491,44 +489,36 @@ class EditWindow(QtWidgets.QMainWindow, Ui_AddForm):
                 print("修改失败:", e)
 
 
-# =========================
 # 启动
-# =========================
-parser = argparse.ArgumentParser(description='参数说明')
-parser.add_argument('--create_ok', help="创建数据库", action="store_true")
-args = parser.parse_args()
-
 if __name__ == '__main__':
-    if args.create_ok:
-        create_ok()
-    else:
-        app = QtWidgets.QApplication(sys.argv)
-        
-        # --- 单实例检查开始 ---
-        serverName = "MyUniqueAppServerName" # 这里的名字要唯一
-        socket = QLocalSocket()
-        socket.connectToServer(serverName)
-        
-        # 如果能连接上，说明已有实例在运行
-        if socket.waitForConnected(500):
-            print("程序已在运行，激活已有窗口")
-            sys.exit(0)
-        
-        # 如果连接不上，说明是第一个实例，创建一个本地服务器监听
-        localServer = QLocalServer()
-        localServer.listen(serverName)
-        # --- 单实例检查结束 ---
+    create_ok()
+    app = QtWidgets.QApplication(sys.argv)
+    
+    # --- 单实例检查开始 ---
+    serverName = "MyUniqueAppServerName" # 这里的名字要唯一
+    socket = QLocalSocket()
+    socket.connectToServer(serverName)
+    
+    # 如果能连接上，说明已有实例在运行
+    if socket.waitForConnected(500):
+        print("程序已在运行，激活已有窗口")
+        sys.exit(0)
+    
+    # 如果连接不上，说明是第一个实例，创建一个本地服务器监听
+    localServer = QLocalServer()
+    localServer.listen(serverName)
+    # --- 单实例检查结束 ---
 
-        main = MainWindow()
-        
-        # 当有新连接（新实例尝试启动）时，激活主窗口
-        localServer.newConnection.connect(lambda: (
-            main.setWindowState(main.windowState() & ~Qt.WindowMinimized | Qt.WindowActive),
-            main.show(),
-            main.raise_(),
-            main.activateWindow(),
-            main.lineEdit.setFocus()
-        ))
+    main = MainWindow()
+    
+    # 当有新连接（新实例尝试启动）时，激活主窗口
+    localServer.newConnection.connect(lambda: (
+        main.setWindowState(main.windowState() & ~Qt.WindowMinimized | Qt.WindowActive),
+        main.show(),
+        main.raise_(),
+        main.activateWindow(),
+        main.lineEdit.setFocus()
+    ))
 
-        main.show()
-        sys.exit(app.exec_())
+    main.show()
+    sys.exit(app.exec_())
